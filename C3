@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação de Cores</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #input-cor {
+            padding: 10px;
+            width: 200px;
+            margin-top: 20px;
+        }
+
+        #feedback {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Jogo de Adivinhação de Cores</h1>
+    <p>Tente adivinhar a cor selecionada pelo computador. As opções de cores estão listadas abaixo:</p>
+    <div id="cores-disponiveis"></div>
+    <input type="text" id="input-cor" placeholder="Digite uma cor aqui...">
+    <button id="btn-adivinhar">Adivinhar</button>
+    <p id="feedback"></p>
+
+    <script>
+        const coresBase = ["Red", "Green", "Blue", "Yellow", "Purple", "Orange", "Pink", "Cyan", "Magenta", "Brown"];
+        const coresAleatorias = coresBase.sort(() => 0.5 - Math.random()).slice(0, 10);
+        const corEscolhida = coresAleatorias[Math.floor(Math.random() * coresAleatorias.length)];
+
+        document.getElementById('cores-disponiveis').innerText = `Cores disponíveis: ${coresAleatorias.join(", ")}`;
+
+        document.getElementById('btn-adivinhar').addEventListener('click', () => {
+            const inputCor = document.getElementById('input-cor').value.trim();
+            const feedback = document.getElementById('feedback');
+
+            if (!coresAleatorias.includes(inputCor)) {
+                feedback.innerText = "Por favor, escolha uma cor válida da lista!";
+                return;
+            }
+
+            if (inputCor === corEscolhida) {
+                feedback.innerText = `Parabéns! Você acertou! A cor era ${corEscolhida}.`;
+                document.body.style.backgroundColor = corEscolhida;
+            } else {
+                const dica = inputCor < corEscolhida ? "mais próxima do início do alfabeto" : "mais próxima do final do alfabeto";
+                feedback.innerText = `Errado! Dica: a cor está ${dica}.`;
+            }
+        });
+    </script>
+</body>
+</html>
